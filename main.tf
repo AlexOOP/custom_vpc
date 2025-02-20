@@ -78,6 +78,10 @@ resource "aws_instance" "web" {
     tags = {
       Name = "${var.name}-web"
     }  
+
+    lifecycle {
+        ignore_changes = [ subnet_id ]
+    }
 }
 
 resource "random_integer" "subnet_index" {
