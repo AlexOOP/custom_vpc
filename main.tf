@@ -2,7 +2,7 @@ resource "aws_vpc" "custom_vpc" {
     cidr_block = var.vpc_cidr
     enable_dns_support = true
     tags = {
-        Name = var.name
+        Name = "${var.name}-vpc"
     }
 }
 
@@ -58,7 +58,7 @@ resource "aws_key_pair" "public_ssh_key" {
     public_key = file(pathexpand(var.public_key))
 }
 
-resource "aws_instance" "web" {
+resource "aws_instance" "public_ec2_instance" {
     ami = data.aws_ami.ubuntu_24_arm.id
     instance_type = var.instance_type
     subnet_id = element(aws_subnet.public_subnet[*].id, random_integer.subnet_index.result)
@@ -76,7 +76,7 @@ resource "aws_instance" "web" {
     EOF
 
     tags = {
-      Name = "${var.name}-web"
+      Name = "${var.name}-public-instance"
     }  
 
     lifecycle {
@@ -111,7 +111,7 @@ resource "aws_security_group" "public_sg" {
     }
 
     tags = {
-      Name = "${var.name}-web-ec2-sg"
+      Name = "${var.name}-public-sg"
     }
 }
 
@@ -137,6 +137,6 @@ resource "aws_security_group" "private_sg" {
     }
 
     tags = {
-      Name = "${var.name}-web-ec2-sg"
+      Name = "${var.name}-private-sg"
     }
 }

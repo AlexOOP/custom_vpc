@@ -11,7 +11,7 @@ variable "instance_type" {
 }
 
 variable "name" {
-    default = "Alex"
+    default = "AlexTest"
 }
 
 variable "public_key" {
